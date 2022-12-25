@@ -1,0 +1,45 @@
+service: nestjs-serverless
+configValidationMode: error
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ap-northeast-2
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "ec2:CreateNetworkInterface"
+          Resource: "*"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-webpack-prisma
+  - serverless-offline
+
+custom:
+  webpack:
+    includeModules: true
+    webpackConfig: "webpack.sls.config.js"
+
+functions:
+  main:
+    handler: dist/main.handler
+    vpc:
+      securityGroupIds:
+        - sg-0bcac75e2cd72a2b9
+      subnetIds:
+        - subnet-064f0eb2c5430a0eb
+        - subnet-0924a045602b5250d
+        - subnet-03838d984cf028cb4
+        - subnet-0eefa635c22dc1f04
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: "{proxy+}"

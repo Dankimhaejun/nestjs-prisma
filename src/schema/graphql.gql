@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Mutation {
+  refreshToken(token: String!): Token!
+  signIn(input: SignInInput!): Token!
+  signUp(input: SignUpInput!): Token!
+}
+
+type Query {
+  me: String!
+}
+
+input SignInInput {
+  email: String!
+}
+
+input SignUpInput {
+  email: String!
+  name: String
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: String!
+
+  """JWT refresh token"""
+  refreshToken: String!
+}
